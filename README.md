@@ -1,6 +1,8 @@
 # zk-soroban-examples
 
 JSON files (`verification_key.json`, `proof.json`, etc.) in `data/` are taken from [zk-ton-examples](https://github.com/zk-examples/zk-ton-examples).
+Arkworks JSON files in `data/arkworks/` are taken from tests in [ark-snarkjs](https://github.com/mysteryon88/ark-snarkjs).
+
 
 Soroban smart contract verifier for **Groth16** zero-knowledge proofs.  
 It supports the **snarkjs-compatible JSON** format (e.g. `verification_key.json`) produced by:
