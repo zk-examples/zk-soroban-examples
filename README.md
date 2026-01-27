@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# zk-soroban-examples
-=======
 # zk-soroban-examples
 
 JSON files (`verification_key.json`, `proof.json`, etc.) in `data/` are taken from [zk-ton-examples](https://github.com/zk-examples/zk-ton-examples).
@@ -16,4 +13,3 @@ soroban-verifier-gen --vk data/circom/verification_key.json --out contracts/circ
 soroban-verifier-gen --vk data/gnark/verification_key.json --out contracts/gnark_verifier
 soroban-verifier-gen --vk data/arkworks/verification_key.json --out contracts/arkworks_verifier --crate-name arkworks_verifier
 ```
->>>>>>> f791aa9 (test examples)
