@@ -21,5 +21,5 @@ cd soroban-hello-world
 cargo install soroban-verifier-gen
 soroban-verifier-gen --vk data/circom/verification_key.json --out contracts/circom_verifier
 soroban-verifier-gen --vk data/gnark/verification_key.json --out contracts/gnark_verifier
-soroban-verifier-gen --vk data/arkworks/verification_key.json --out contracts/arkworks_verifier --crate-name arkworks_verifier
+soroban-verifier-gen --vk data/arkworks/verification_key.json --out contracts/ark_verifier --crate-name ark_verifier
 ```

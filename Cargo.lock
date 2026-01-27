@@ -293,11 +293,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "arkworks_verifier"
+name = "ark_verifier"
 version = "0.1.0"
 dependencies = [
  "ark-bls12-381 0.5.0",
  "ark-serialize 0.5.0",
+ "serde",
+ "serde_json",
  "soroban-sdk",
 ]
 
@@ -836,6 +838,8 @@ version = "0.1.0"
 dependencies = [
  "ark-bls12-381 0.5.0",
  "ark-serialize 0.5.0",
+ "serde",
+ "serde_json",
  "soroban-sdk",
 ]
 
