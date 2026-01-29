@@ -1,7 +1,2 @@
-# Rust's output directory
-target
-
-# Local settings
-.soroban
-.stellar
-test_snapshots
+Cargo.lock
+target/

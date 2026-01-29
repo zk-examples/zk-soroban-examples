@@ -1,5 +1,4 @@
 #![cfg(test)]
-#![allow(unused_imports)]
 
 extern crate std;
 
@@ -81,7 +80,7 @@ fn test() {
     assert_eq!(res, true);
 
     // Test Case 2: Verify the proof with an incorrect public output
-    let output = Vec::from_array(&env, [Fr::from_u256(U256::from_u32(&env, 22))]);
+    let output = Vec::from_array(&env, [Fr::from_u256(U256::from_u32(&env, 23))]);
     let res = client.verify_proof(&proof, &output);
     assert_eq!(res, false);
 }

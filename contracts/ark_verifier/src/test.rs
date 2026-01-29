@@ -1,9 +1,9 @@
 #![cfg(test)]
-#![allow(unused_imports)]
 
 extern crate std;
 
-use ark_bls12_381::{Fq, Fq2};
+use ark_bls12_381::{Fq, Fq2, Fr as ArkFr};
+use ark_ff::{BigInteger, PrimeField};
 use ark_serialize::CanonicalSerialize;
 use core::str::FromStr;
 use serde::Deserialize;
@@ -45,6 +45,18 @@ fn create_client(e: &Env) -> Groth16VerifierClient<'_> {
     Groth16VerifierClient::new(e, &contract_id)
 }
 
+fn fr_from_str(env: &Env, s: &str) -> Fr {
+    // Parse string -> arkworks Fr -> bytes -> Soroban Fr
+    let ark_fr = ArkFr::from_str(s).unwrap();
+    let bigint = ark_fr.into_bigint();
+    let bytes = bigint.to_bytes_le();
+    let mut u256_bytes = [0u8; 32];
+    u256_bytes[..bytes.len().min(32)].copy_from_slice(&bytes[..bytes.len().min(32)]);
+    u256_bytes.reverse(); // little-endian -> big-endian for U256
+    let bytes_obj = Bytes::from_array(&env, &u256_bytes);
+    Fr::from_u256(U256::from_be_bytes(&env, &bytes_obj))
+}
+
 #[test]
 fn test() {
     // Initialize the test environment
@@ -74,18 +86,26 @@ fn test() {
     // Create the contract client
     let client = create_client(&env);
 
-    // Test Case 1: Verify the proof with the correct public output from JSON
-    let public_signal: u64 = proof_json.public_signals[0].parse().unwrap();
-    let mut bytes_array = [0u8; 32];
-    bytes_array[24..].copy_from_slice(&public_signal.to_be_bytes());
-    let bytes = Bytes::from_array(&env, &bytes_array);
-    let public_signal_u256 = U256::from_be_bytes(&env, &bytes);
-    let output = Vec::from_array(&env, [Fr::from_u256(public_signal_u256)]);
-    let res = client.verify_proof(&proof, &output);
+    // Test Case 1: Verify the proof with all correct public signals from JSON
+    let mut public_signals = Vec::new(&env);
+    for signal_str in &proof_json.public_signals {
+        let fr = fr_from_str(&env, signal_str);
+        public_signals.push_back(fr);
+    }
+    let res = client.verify_proof(&proof, &public_signals);
     assert_eq!(res, true);
 
-    // Test Case 2: Verify the proof with an incorrect public output
-    let output = Vec::from_array(&env, [Fr::from_u256(U256::from_u32(&env, 22))]);
-    let res = client.verify_proof(&proof, &output);
+    // Test Case 2: Verify the proof with incorrect public signals (change first signal)
+    let mut incorrect_signals = Vec::new(&env);
+    // Use incorrect value for first signal, keep others the same
+    incorrect_signals.push_back(fr_from_str(
+        &env,
+        "999999999999999999999999999999999999999999999999999999999999999999999",
+    ));
+    for signal_str in proof_json.public_signals.iter().skip(1) {
+        let fr = fr_from_str(&env, signal_str);
+        incorrect_signals.push_back(fr);
+    }
+    let res = client.verify_proof(&proof, &incorrect_signals);
     assert_eq!(res, false);
 }
