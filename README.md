@@ -35,4 +35,6 @@ cargo install soroban-verifier-gen
 soroban-verifier-gen --vk data/circom/verification_key.json --out contracts/circom_verifier --crate-name circom_verifier
 soroban-verifier-gen --vk data/gnark/verification_key.json --out contracts/gnark_verifier --crate-name gnark_verifier
 soroban-verifier-gen --vk data/arkworks/verification_key.json --out contracts/ark_verifier --crate-name ark_verifier
+
+soroban-verifier-gen --vk data/gnark_bn254/verification_key.json --out contracts/gnark_bn254_verifier --crate-name gnark_bn254_verifier --curve bn254
 ```
