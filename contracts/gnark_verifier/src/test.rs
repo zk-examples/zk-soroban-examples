@@ -48,34 +48,25 @@ fn create_client(e: &Env) -> Groth16VerifierClient<'_> {
 
 #[test]
 fn test() {
-    // Initialize the test environment
     let env = Env::default();
 
-    // Load proof from JSON file
     let proof_json_str = include_str!("../../../data/gnark/proof.json");
     let proof_json: ProofJson = serde_json::from_str(proof_json_str).unwrap();
 
-    // Extract proof components from JSON
-    let pi_ax = &proof_json.pi_a[0];
-    let pi_ay = &proof_json.pi_a[1];
-    let pi_bx1 = &proof_json.pi_b[0][0];
-    let pi_bx2 = &proof_json.pi_b[0][1];
-    let pi_by1 = &proof_json.pi_b[1][0];
-    let pi_by2 = &proof_json.pi_b[1][1];
-    let pi_cx = &proof_json.pi_c[0];
-    let pi_cy = &proof_json.pi_c[1];
-
-    // Construct the proof from JSON data
     let proof = Proof {
-        a: g1_from_coords(&env, pi_ax, pi_ay),
-        b: g2_from_coords(&env, pi_bx1, pi_bx2, pi_by1, pi_by2),
-        c: g1_from_coords(&env, pi_cx, pi_cy),
+        a: g1_from_coords(&env, &proof_json.pi_a[0], &proof_json.pi_a[1]),
+        b: g2_from_coords(
+            &env,
+            &proof_json.pi_b[0][0],
+            &proof_json.pi_b[0][1],
+            &proof_json.pi_b[1][0],
+            &proof_json.pi_b[1][1],
+        ),
+        c: g1_from_coords(&env, &proof_json.pi_c[0], &proof_json.pi_c[1]),
     };
 
-    // Create the contract client
     let client = create_client(&env);
 
-    // Test Case 1: Verify the proof with the correct public output from JSON
     let public_signal: u32 = proof_json.public_signals[0].parse().unwrap();
     let output = Vec::from_array(
         &env,
@@ -84,7 +75,6 @@ fn test() {
     let res = client.verify_proof(&proof, &output);
     assert_eq!(res, true);
 
-    // Test Case 2: Verify the proof with an incorrect public output
     let output = Vec::from_array(&env, [Bls12381Fr::from_u256(U256::from_u32(&env, 23))]);
     let res = client.verify_proof(&proof, &output);
     assert_eq!(res, false);
