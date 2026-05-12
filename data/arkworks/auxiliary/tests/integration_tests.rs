@@ -1,14 +1,13 @@
 use ark_bls12_381::{Bls12_381, Fr};
 use ark_crypto_primitives::crh::{CRHScheme, TwoToOneCRHScheme};
 use ark_groth16::Groth16;
-use ark_relations::r1cs::{ConstraintSynthesizer, ConstraintSystem};
+use ark_relations::gr1cs::{ConstraintSynthesizer, ConstraintSystem};
 use ark_snark::SNARK;
 use ark_snarkjs::{export_proof, export_vk};
 use ark_std::rand::rngs::OsRng;
 use merkle::circuit::MerkleTreeVerification;
 use merkle::common::{LeafHash, TwoToOneHash};
 use merkle::*;
-use std::fs;
 
 // cargo test merkle_tree -- --nocapture
 
@@ -81,7 +80,12 @@ fn merkle_tree() {
 
     // Extract public inputs from the constraint system
     // instance_assignment[0] is always 1 (the constant one), so we skip it
-    let public_inputs: Vec<Fr> = cs_for_inputs.borrow().unwrap().instance_assignment[1..].to_vec();
+    let public_inputs: Vec<Fr> = cs_for_inputs
+        .borrow()
+        .unwrap()
+        .instance_assignment()
+        .unwrap()[1..]
+        .to_vec();
 
     eprintln!("Total public inputs count: {}", public_inputs.len());
     eprintln!("Public inputs: {:?}", public_inputs);

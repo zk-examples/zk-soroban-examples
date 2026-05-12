@@ -30,8 +30,6 @@ For arkworks, circuit definitions and setup code are in `./data/arkworks/auxilia
 ## Usage
 
 ```sh
-cd groth16_verifier
-
 cargo install soroban-verifier-gen
 
 # bls12-381
@@ -41,4 +39,6 @@ soroban-verifier-gen --vk data/arkworks/verification_key.json --out contracts/ar
 
 # bn254
 soroban-verifier-gen --vk data/gnark_bn254/verification_key.json --out contracts/gnark_bn254_verifier --crate-name gnark_bn254_verifier --curve bn254
+
+cargo test --workspace
 ```
