@@ -1,3 +1,5 @@
 Cargo.lock
 target/
 test_snapshots
+data/ark_mimc/artifacts/**/*.bin
+data/ark_mimc/artifacts/**/*.hex

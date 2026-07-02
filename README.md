@@ -27,18 +27,47 @@ For gnark BN254, circuit definitions and setup code are in `./data/gnark_bn254/a
 
 For arkworks, circuit definitions and setup code are in `./data/arkworks/auxiliary` (see [data/arkworks/README.md](./data/arkworks/README.md)).
 
+Additional examples:
+
+- `data/gnark_cubic`: gnark BLS12-381 cubic circuit with native JSON and binary artifacts.
+- `data/ark_mimc`: arkworks MiMC circuits for BN254 and BLS12-381.
+
 ## Usage
 
 ```sh
 cargo install soroban-verifier-gen
 
 # bls12-381
-soroban-verifier-gen --vk data/circom/verification_key.json --out contracts/circom_verifier --crate-name circom_verifier
-soroban-verifier-gen --vk data/gnark/verification_key.json --out contracts/gnark_verifier --crate-name gnark_verifier
-soroban-verifier-gen --vk data/arkworks/verification_key.json --out contracts/ark_verifier --crate-name ark_verifier
+soroban-verifier-gen --vk data/circom/verification_key.json --out contracts/circom_verifier --crate-name circom_verifier --soroban-sdk-version v26
+soroban-verifier-gen --vk data/gnark/verification_key.json --out contracts/gnark_verifier --crate-name gnark_verifier --soroban-sdk-version v26
+soroban-verifier-gen --vk data/arkworks/verification_key.json --out contracts/ark_verifier --crate-name ark_verifier --soroban-sdk-version v26
+soroban-verifier-gen --vk data/gnark_cubic/verification_key_gnark.json --proof data/gnark_cubic/proof_gnark.json --public data/gnark_cubic/public.json --out contracts/cubic_gnark_json_verifier --crate-name cubic_gnark_json_verifier --soroban-sdk-version v26
+soroban-verifier-gen --vk data/gnark_cubic/verification_key.bin --proof data/gnark_cubic/proof.bin --public data/gnark_cubic/public.json --out contracts/cubic_gnark_bin_verifier --crate-name cubic_gnark_bin_verifier --soroban-sdk-version v26
+soroban-verifier-gen --bundle data/ark_mimc/artifacts/bls12_381/groth16_artifacts.json --out contracts/ark_mimc_bls12381_verifier --crate-name ark_mimc_bls12381_verifier --soroban-sdk-version v26
 
 # bn254
-soroban-verifier-gen --vk data/gnark_bn254/verification_key.json --out contracts/gnark_bn254_verifier --crate-name gnark_bn254_verifier --curve bn254
+soroban-verifier-gen --vk data/gnark_bn254/verification_key.json --out contracts/gnark_bn254_verifier --crate-name gnark_bn254_verifier --curve bn254 --soroban-sdk-version v26
+soroban-verifier-gen --bundle data/ark_mimc/artifacts/bn254/groth16_artifacts.json --out contracts/ark_mimc_bn254_verifier --crate-name ark_mimc_bn254_verifier --soroban-sdk-version v26
 
 cargo test --workspace
+```
+
+Build gnark cubic artifacts:
+
+```sh
+cd data/gnark_cubic
+go test ./...
+go run .
+cd ../..
+```
+
+Build arkworks MiMC artifacts:
+
+```sh
+cd data/ark_mimc
+cargo test test_mimc_groth16_bn254
+cargo test test_mimc_groth16_bls12_381
+cargo run -- export bn254 artifacts
+cargo run -- export bls12_381 artifacts
+cd ../..
 ```

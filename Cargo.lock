@@ -307,6 +307,30 @@ dependencies = [
 ]
 
 [[package]]
+name = "ark_mimc_bls12381_verifier"
+version = "0.1.0"
+dependencies = [
+ "ark-bls12-381 0.6.0",
+ "ark-ff 0.6.0",
+ "ark-serialize 0.6.0",
+ "serde",
+ "serde_json",
+ "soroban-sdk",
+]
+
+[[package]]
+name = "ark_mimc_bn254_verifier"
+version = "0.1.0"
+dependencies = [
+ "ark-bn254 0.6.0",
+ "ark-ff 0.6.0",
+ "ark-serialize 0.6.0",
+ "serde",
+ "serde_json",
+ "soroban-sdk",
+]
+
+[[package]]
 name = "ark_verifier"
 version = "0.1.0"
 dependencies = [
@@ -510,6 +534,30 @@ name = "ctor-proc-macro"
 version = "0.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e2931af7e13dc045d8e9d26afccc6fa115d64e115c9c84b1166288b46f6782c2"
+
+[[package]]
+name = "cubic_gnark_bin_verifier"
+version = "0.1.0"
+dependencies = [
+ "ark-bls12-381 0.6.0",
+ "ark-ff 0.6.0",
+ "ark-serialize 0.6.0",
+ "serde",
+ "serde_json",
+ "soroban-sdk",
+]
+
+[[package]]
+name = "cubic_gnark_json_verifier"
+version = "0.1.0"
+dependencies = [
+ "ark-bls12-381 0.6.0",
+ "ark-ff 0.6.0",
+ "ark-serialize 0.6.0",
+ "serde",
+ "serde_json",
+ "soroban-sdk",
+]
 
 [[package]]
 name = "curve25519-dalek"

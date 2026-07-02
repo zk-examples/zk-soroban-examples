@@ -7,6 +7,8 @@ exclude = [
   "data/arkworks/auxiliary",
   "data/circom/**",
   "data/gnark/**",
+  "data/gnark_cubic",
+  "data/ark_mimc",
 ]
 
 [workspace.dependencies]
